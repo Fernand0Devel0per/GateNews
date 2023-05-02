@@ -12,8 +12,8 @@ public class NewsController : ControllerBase
        
     }
 
-    public IEnumerable<> GetAllNewsAsync()
+    public IEnumerable<int> GetAllNewsAsync()
     {
-      return null
+        return null;
     }
 }
