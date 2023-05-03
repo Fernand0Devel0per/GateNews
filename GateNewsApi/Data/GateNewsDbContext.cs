@@ -10,14 +10,13 @@ namespace GateNewsApi.Data
         {
         }
 
-        public DbSet<Category> Categorys { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<News> News { get; set; }
-        public DbSet<User> User { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder
-               .Entity<User>()
+            modelBuilder.Entity<User>()
                .HasMany(u => u.News)
                .WithOne(n => n.Author)
                .OnDelete(DeleteBehavior.Cascade);

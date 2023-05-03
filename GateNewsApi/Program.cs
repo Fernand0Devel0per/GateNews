@@ -1,3 +1,5 @@
+using GateNewsApi.DAL;
+using GateNewsApi.DAL.Interfaces;
 using GateNewsApi.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,6 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<GateNewsDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped(typeof(IBaseDao<>), typeof(BaseDao<>));
+builder.Services.AddScoped<IUserDao, UserDao>();
+builder.Services.AddScoped<ICategoryDao, CategoryDao>();
+builder.Services.AddScoped<INewsDao, NewsDao>();
 
 builder.Services.AddControllers();
 
