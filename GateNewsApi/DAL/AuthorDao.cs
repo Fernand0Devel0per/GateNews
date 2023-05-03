@@ -5,19 +5,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GateNewsApi.DAL
 {
-    public class UserDao : BaseDao<User>, IUserDao
+    public class AuthorDao : BaseDao<Author>, IAuthorDao
     {
-        public UserDao(GateNewsDbContext context) : base(context)
+        public AuthorDao(GateNewsDbContext context) : base(context)
         {
             
         }
 
-        public async Task<User> GetByIdAsync(int id)
+        public async Task<Author> GetByIdAsync(Guid id)
         {
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<User> GetByFullNameAsync(string fullName)
+        public async Task<Author> GetByFullNameAsync(string fullName)
         {
             var names = fullName.Split(' ');
             var lastName = names.Last();
@@ -27,10 +27,5 @@ namespace GateNewsApi.DAL
                 .FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
         }
 
-        public async Task<User> GetByEmailAsync(string email)
-        {
-            return await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == email);
-        }
     }
 }

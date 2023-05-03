@@ -2,10 +2,9 @@
 
 namespace GateNewsApi.DAL.Interfaces
 {
-    public interface IUserDao : IBaseDao<User>
+    public interface IAuthorDao : IBaseDao<Author>
     {
-        Task<User> GetByIdAsync(int id);
-        Task<User> GetByFullNameAsync(string fullName);
-        Task<User> GetByEmailAsync(string email);
+        Task<Author> GetByIdAsync(Guid id);
+        Task<Author> GetByFullNameAsync(string fullName);
     }
 }

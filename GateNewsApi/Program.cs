@@ -9,7 +9,7 @@ builder.Services.AddDbContext<GateNewsDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped(typeof(IBaseDao<>), typeof(BaseDao<>));
-builder.Services.AddScoped<IUserDao, UserDao>();
+builder.Services.AddScoped<IAuthorDao, AuthorDao>();
 builder.Services.AddScoped<ICategoryDao, CategoryDao>();
 builder.Services.AddScoped<INewsDao, NewsDao>();
 

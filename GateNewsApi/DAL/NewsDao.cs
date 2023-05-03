@@ -28,13 +28,13 @@ namespace GateNewsApi.DAL
             return await GetPagedResults(query, pageNumber);
         }
 
-        public async Task<(List<News> Items, int TotalPages)> GetByCategoryAsync(int categoryId, int pageNumber)
+        public async Task<(List<News> Items, int TotalPages)> GetByCategoryAsync(Guid categoryId, int pageNumber)
         {
             var query = GetNewsWithAuthorAndCategory().Where(n => n.CategoryId == categoryId);
             return await GetPagedResults(query, pageNumber);
         }
 
-        public async Task<(List<News> Items, int TotalPages)> GetByCategoryAndAuthorAsync(int categoryId, string authorFullName, int pageNumber)
+        public async Task<(List<News> Items, int TotalPages)> GetByCategoryAndAuthorAsync(Guid categoryId, string authorFullName, int pageNumber)
         {
             var names = authorFullName.Split(' ');
             var firstName = names[0];
