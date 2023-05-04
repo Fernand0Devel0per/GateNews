@@ -1,6 +1,5 @@
 ﻿using GateNewsApi.DAL.Interfaces;
 using GateNewsApi.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace GateNewsApi.DAL
 {
@@ -23,14 +22,14 @@ namespace GateNewsApi.DAL
         public async Task<T> UpdateAsync(T entity)
         {
             _context.Update(entity);
-            await _context.SaveChangesAsync();
-            return entity;
+            var rowsAffected = await _context.SaveChangesAsync();
+            return rowsAffected > 0 ? entity : null;
         }
 
-        public async Task DeleteAsync(T entity)
+        public async Task<bool> DeleteAsync(T entity)
         {
             _context.Remove(entity);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

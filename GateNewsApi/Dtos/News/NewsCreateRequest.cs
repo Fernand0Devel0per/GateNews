@@ -1,5 +1,4 @@
-﻿using GateNewsApi.Domain;
-using GateNewsApi.Enums;
+﻿using GateNewsApi.Enums;
 
 namespace GateNewsApi.Dtos.News
 {

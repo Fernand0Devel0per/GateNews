@@ -1,11 +1,8 @@
-﻿using GateNewsApi.DAL;
-using GateNewsApi.DAL.Interfaces;
-using GateNewsApi.Domain;
+﻿using GateNewsApi.BLL.Interfaces;
 using GateNewsApi.Dtos.Authors;
-using GateNewsApi.Dtos.Users;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace GateNewsApi.Controllers
 {
@@ -14,48 +11,71 @@ namespace GateNewsApi.Controllers
     public class AuthorController : ControllerBase
     {
 
-        public AuthorController()
+        private readonly IAuthorService _authorService;
+
+        public AuthorController(IAuthorService authorService)
         {
-            
+            _authorService = authorService;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            return null;
+            var author = await _authorService.GetByIdAsync(id);
+            return Ok(author);
         }
 
         [HttpGet("name/{fullName}")]
         public async Task<IActionResult> GetByFullNameAsync(string fullName)
         {
-            return null;
+            var author = await _authorService.GetByFullNameAsync(fullName);
+            return Ok(author);
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> CreateUser(UserCreateRequest request)
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAuthor()
         {
-            return null;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _authorService.DeleteAuthorAsync(Guid.Parse(userId));
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NotFound();
         }
 
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAuthor(Guid id)
+        [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> UpdateAuthor(AuthorUpdateRequest request)
         {
-            
-            return null;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _authorService.UpdateAuthorAsync(Guid.Parse(userId), request);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return NotFound();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAuthor(Guid id, AuthorUpdateRequest request)
-        {
-            return null;
-        }
+       
 
-        [HttpPost("change-password")]
-        public async Task<IActionResult> ChangePassword(PasswordChangeRequest request)
-        {
-            return null;
-        }
     }
 
 }

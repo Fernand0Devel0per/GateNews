@@ -12,6 +12,13 @@ namespace GateNewsApi.DAL
         public NewsDao(GateNewsDbContext context) : base(context) { }
 
 
+        public async Task<News> GetByIdAsync(Guid id)
+        {
+            return await _context.News
+                .Include(n => n.Category)
+                .SingleOrDefaultAsync(n => n.Id == id);
+        }
+
         public async Task<(List<News> Items, int TotalPages)> GetByTitleAsync(string title, int pageNumber)
         {
             var query = GetNewsWithAuthorAndCategory().Where(n => n.Title.Contains(title));

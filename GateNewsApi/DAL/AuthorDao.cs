@@ -12,9 +12,14 @@ namespace GateNewsApi.DAL
             
         }
 
+        public async Task<Author> GetByUserIdAsync(Guid userId)
+        {
+            return await _context.Authors.FirstOrDefaultAsync(a => a.UserId == userId);
+        }
+
         public async Task<Author> GetByIdAsync(Guid id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Authors.FindAsync(id);
         }
 
         public async Task<Author> GetByFullNameAsync(string fullName)
@@ -23,7 +28,7 @@ namespace GateNewsApi.DAL
             var lastName = names.Last();
             var firstName = string.Join(' ', names.Take(names.Length - 1));
 
-            return await _context.Users
+            return await _context.Authors
                 .FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
         }
 

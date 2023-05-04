@@ -6,5 +6,6 @@ namespace GateNewsApi.DAL.Interfaces
     {
         Task<Author> GetByIdAsync(Guid id);
         Task<Author> GetByFullNameAsync(string fullName);
+        Task<Author> GetByUserIdAsync(Guid userId);
     }
 }

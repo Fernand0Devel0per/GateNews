@@ -10,8 +10,6 @@
 
         public DateTime PublishDate { get; set; }
 
-        public Guid UserId { get; set; }
-
         public Author Author { get; set; }
 
         public Guid CategoryId { get; set; }

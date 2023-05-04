@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace GateNewsApi.Enums
+﻿namespace GateNewsApi.Enums
 {
     public enum CategoryEnum
     {

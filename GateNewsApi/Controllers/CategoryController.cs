@@ -1,5 +1,4 @@
-﻿using GateNewsApi.DAL.Interfaces;
-using GateNewsApi.Domain;
+﻿using GateNewsApi.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GateNewsApi.Controllers
@@ -8,18 +7,20 @@ namespace GateNewsApi.Controllers
     [Route("api/[controller]")]
     public class CategoryController : ControllerBase
     {
-   
 
-        public CategoryController()
+        private readonly ICategoryService _categoryService;
+
+        public CategoryController(ICategoryService categoryService)
         {
-      
+            _categoryService = categoryService;
         }
 
         // GET: api/Category
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            return null;
+            var categories = await _categoryService.GetAllAsync();
+            return Ok(categories);
         }
     }
 }

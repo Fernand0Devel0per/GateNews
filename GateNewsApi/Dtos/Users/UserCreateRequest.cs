@@ -1,5 +1,4 @@
-﻿using GateNewsApi.Domain;
-using GateNewsApi.Dtos.Authors;
+﻿using GateNewsApi.Dtos.Authors;
 
 namespace GateNewsApi.Dtos.Users
 {
