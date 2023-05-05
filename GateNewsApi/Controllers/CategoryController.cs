@@ -15,7 +15,10 @@ namespace GateNewsApi.Controllers
             _categoryService = categoryService;
         }
 
-        // GET: api/Category
+        /// <summary>
+        /// Retrieve all categories.
+        /// </summary>
+        /// <returns>A list of category objects.</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {

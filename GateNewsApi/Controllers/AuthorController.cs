@@ -18,6 +18,11 @@ namespace GateNewsApi.Controllers
             _authorService = authorService;
         }
 
+        /// <summary>
+        /// Retrieve an author by their ID.
+        /// </summary>
+        /// <param name="id">The unique identifier of the author.</param>
+        /// <returns>An author object if found; otherwise, a NotFound response.</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
@@ -25,6 +30,11 @@ namespace GateNewsApi.Controllers
             return Ok(author);
         }
 
+        /// <summary>
+        /// Retrieve an author by their full name.
+        /// </summary>
+        /// <param name="fullName">The full name of the author.</param>
+        /// <returns>An author object if found; otherwise, a NotFound response.</returns>
         [HttpGet("name/{fullName}")]
         public async Task<IActionResult> GetByFullNameAsync(string fullName)
         {
@@ -32,6 +42,11 @@ namespace GateNewsApi.Controllers
             return Ok(author);
         }
 
+        /// <summary>
+        /// Delete the authenticated author.
+        /// </summary>
+        /// <returns>An Ok response if the author is deleted; otherwise, a NotFound response.</returns>
+        [Authorize]
         [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteAuthor()
@@ -53,6 +68,11 @@ namespace GateNewsApi.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Update the authenticated author's information.
+        /// </summary>
+        /// <param name="request">The updated author information.</param>
+        /// <returns>An Ok response if the author is updated; otherwise, a NotFound response.</returns>
         [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateAuthor(AuthorUpdateRequest request)

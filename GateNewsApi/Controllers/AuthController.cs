@@ -18,6 +18,11 @@ namespace GateNewsApi.Controllers
             _authService = authService;
         }
 
+        /// <summary>
+        /// Register a new user.
+        /// </summary>
+        /// <param name="request">The user registration information.</param>
+        /// <returns>A status indicating the result of the registration process.</returns>
         [HttpPost("register")]
         public async Task<IActionResult> CreateUser(UserCreateRequest request)
         {
@@ -31,6 +36,11 @@ namespace GateNewsApi.Controllers
             return BadRequest(result.Errors);
         }
 
+        /// <summary>
+        /// Log in with an existing user.
+        /// </summary>
+        /// <param name="loginRequest">The user's login credentials.</param>
+        /// <returns>A JWT token if the login is successful.</returns>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
@@ -45,6 +55,11 @@ namespace GateNewsApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Change the password of the authenticated user.
+        /// </summary>
+        /// <param name="request">The password change information.</param>
+        /// <returns>A status indicating the result of the password change process.</returns>
         [Authorize]
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword(PasswordChangeRequest request)

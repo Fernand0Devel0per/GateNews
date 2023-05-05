@@ -19,6 +19,12 @@ public class NewsController : ControllerBase
         _newsService = newsService;
     }
 
+    /// <summary>
+    /// Retrieve news by its title with pagination.
+    /// </summary>
+    /// <param name="title">The title of the news.</param>
+    /// <param name="pageNumber">The page number for pagination.</param>
+    /// <returns>A list of news with the specified title and the total number of pages.</returns>
     [HttpGet("title/{title}/page/{pageNumber}")]
     public async Task<IActionResult> GetByTitleAsync(string title, int pageNumber)
     {
@@ -26,6 +32,12 @@ public class NewsController : ControllerBase
         return Ok(new { Items = items, TotalPages = totalPages });
     }
 
+    /// <summary>
+    /// Retrieve news by its author's full name with pagination.
+    /// </summary>
+    /// <param name="authorFullName">The full name of the author.</param>
+    /// <param name="pageNumber">The page number for pagination.</param>
+    /// <returns>A list of news written by the specified author and the total number of pages.</returns>
     [HttpGet("author/{authorFullName}/page/{pageNumber}")]
     public async Task<IActionResult> GetByAuthorAsync(string authorFullName, int pageNumber)
     {
@@ -33,6 +45,12 @@ public class NewsController : ControllerBase
         return Ok(new { Items = items, TotalPages = totalPages });
     }
 
+    /// <summary>
+    /// Retrieve news by its category code with pagination.
+    /// </summary>
+    /// <param name="categoryCode">The category code of the news.</param>
+    /// <param name="pageNumber">The page number for pagination.</param>
+    /// <returns>A list of news in the specified category and the total number of pages.</returns>
     [HttpGet("category/{categoryCode}/page/{pageNumber}")]
     public async Task<IActionResult> GetByCategoryAsync(int categoryCode, int pageNumber)
     {
@@ -47,6 +65,13 @@ public class NewsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Retrieve news by its category code and author's full name with pagination.
+    /// </summary>
+    /// <param name="categoryCode">The category code of the news.</param>
+    /// <param name="authorFullName">The full name of the author.</param>
+    /// <param name="pageNumber">The page number for pagination.</param>
+    /// <returns>A list of news in the specified category and written by the specified author, and the total number of pages.</returns>
     [HttpGet("category/{categoryCode}/author/{authorFullName}/page/{pageNumber}")]
     public async Task<IActionResult> GetByCategoryAndAuthorAsync(int categoryCode, string authorFullName, int pageNumber)
     {
@@ -61,6 +86,13 @@ public class NewsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Retrieve news by date interval with pagination.
+    /// </summary>
+    /// <param name="startDate">The start date of the date interval (format: dd-MM-yyyy).</param>
+    /// <param name="endDate">The end date of the date interval (format: dd-MM-yyyy).</param>
+    /// <param name="pageNumber">The page number for pagination.</param>
+    /// <returns>A list of news within the specified date interval and the total number of pages.</returns>
     [HttpGet("date-interval/{startDate}/{endDate}/page/{pageNumber}")]
     public async Task<IActionResult> GetByDateIntervalAsync(string startDate, string endDate, int pageNumber)
     {
@@ -78,6 +110,11 @@ public class NewsController : ControllerBase
         return Ok(new { Items = items, TotalPages = totalPages });
     }
 
+    /// <summary>
+    /// Retrieve news by date with pagination.
+    /// </summary>
+    /// <param name="pageNumber">The page number for pagination.</param>
+    /// <returns>A list of news ordered by date and the total number of pages.</returns>
     [HttpGet("date/page/{pageNumber}")]
     public async Task<IActionResult> GetByDateAsync(int pageNumber)
     {
@@ -85,8 +122,12 @@ public class NewsController : ControllerBase
         return Ok(new { Items = items, TotalPages = totalPages });
     }
 
-   
-    // POST: api/News
+
+    /// <summary>
+    /// Create a news.
+    /// </summary>
+    /// <param name="request">The request object containing the news data.</param>
+    /// <returns>The created news and its URL.</returns>
     [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateNews(NewsCreateRequest request)
@@ -117,7 +158,12 @@ public class NewsController : ControllerBase
         }
     }
 
-    // PUT: api/News/{id}
+    /// <summary>
+    /// Update a news.
+    /// </summary>
+    /// <param name="id">The ID of the news to update.</param>
+    /// <param name="request">The request object containing the updated news data.</param>
+    /// <returns>A status code indicating the result of the update operation.</returns>
     [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateNews(Guid id, NewsUpdateRequest request)
@@ -152,7 +198,11 @@ public class NewsController : ControllerBase
         }
     }
 
-    // DELETE: api/News/{id}
+    /// <summary>
+    /// Delete a news article.
+    /// </summary>
+    /// <param name="id">The ID of the news to delete.</param>
+    /// <returns>A status code indicating the result of the delete operation.</returns>
     [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteNews(Guid id)
