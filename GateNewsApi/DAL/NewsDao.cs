@@ -23,17 +23,18 @@ namespace GateNewsApi.DAL
 
         public async Task<(List<News> Items, int TotalPages)> GetByTitleAsync(string title, int pageNumber)
         {
-            var query = GetNewsWithAuthorAndCategory().Where(n => n.Title.Contains(title));
+            var lowerTitle = title.ToLowerInvariant();
+            var query = GetNewsWithAuthorAndCategory().Where(n => n.Title.ToLowerInvariant().Contains(lowerTitle));
             return await GetPagedResults(query, pageNumber);
         }
 
         public async Task<(List<News> Items, int TotalPages)> GetByAuthorAsync(string authorFullName, int pageNumber)
         {
-            var names = authorFullName.Split(' ');
+            var names = authorFullName.ToLowerInvariant().Split(' ');
             var lastName = names.Last();
             var firstName = string.Join(' ', names.Take(names.Length - 1));
 
-            var query = GetNewsWithAuthorAndCategory().Where(n => n.Author.FirstName == firstName && n.Author.LastName == lastName);
+            var query = GetNewsWithAuthorAndCategory().Where(n => n.Author.FirstName.ToLowerInvariant() == firstName && n.Author.LastName.ToLowerInvariant() == lastName);
             return await GetPagedResults(query, pageNumber);
         }
 
@@ -45,11 +46,11 @@ namespace GateNewsApi.DAL
 
         public async Task<(List<News> Items, int TotalPages)> GetByCategoryAndAuthorAsync(Guid categoryId, string authorFullName, int pageNumber)
         {
-            var names = authorFullName.Split(' ');
+            var names = authorFullName.ToLowerInvariant().Split(' ');
             var lastName = names.Last();
             var firstName = string.Join(' ', names.Take(names.Length - 1));
 
-            var query = GetNewsWithAuthorAndCategory().Where(n => n.CategoryId == categoryId && n.Author.FirstName == firstName && n.Author.LastName == lastName);
+            var query = GetNewsWithAuthorAndCategory().Where(n => n.CategoryId == categoryId && n.Author.FirstName.ToLowerInvariant() == firstName && n.Author.LastName.ToLowerInvariant() == lastName);
             return await GetPagedResults(query, pageNumber);
         }
 

@@ -24,12 +24,12 @@ namespace GateNewsApi.DAL
 
         public async Task<Author> GetByFullNameAsync(string fullName)
         {
-            var names = fullName.Split(' ');
+            var names = fullName.ToLowerInvariant().Split(' ');
             var lastName = names.Last();
             var firstName = string.Join(' ', names.Take(names.Length - 1));
 
             return await _context.Authors
-                .FirstOrDefaultAsync(u => u.FirstName == firstName && u.LastName == lastName);
+                .FirstOrDefaultAsync(u => u.FirstName.ToLowerInvariant() == firstName && u.LastName.ToLowerInvariant() == lastName);
         }
 
     }
