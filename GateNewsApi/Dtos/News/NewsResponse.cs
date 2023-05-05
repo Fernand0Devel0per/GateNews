@@ -8,7 +8,7 @@ namespace GateNewsApi.Dtos.News
         public string Title { get; set; }
         public string Content { get; set; }
         public string PublishDate { get; set; }
-        public AuthorResponse Author { get; set; }
+        public AuthorNewsResponse Author { get; set; }
         public string Category { get; set; }
     }
 }

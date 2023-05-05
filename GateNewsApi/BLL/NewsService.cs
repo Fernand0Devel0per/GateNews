@@ -85,18 +85,11 @@ namespace GateNewsApi.BLL
             return (mappedItems, result.TotalPages);
         }
 
-        public async Task<(List<NewsResponse> Items, int TotalPages)> GetByWordsAsync(List<string> words, int pageNumber)
-        {
-            var result = await _newsDao.GetByWordsAsync(words, pageNumber);
-            var mappedItems = _mapper.Map<List<NewsResponse>>(result.Items);
-            return (mappedItems, result.TotalPages);
-        }
-
         public async Task<NewsResponse> CreateNews(NewsCreateRequest request, Guid userId)
         {
 
-            bool isAppropriateContent = await _contentModerationService.CheckForInappropriateContent(request.Content);
-            if (!isAppropriateContent)
+            bool IsInappropriateContent = await _contentModerationService.CheckForInappropriateContent(request.Content);
+            if (IsInappropriateContent)
             {
                 throw new InvalidOperationException("The provided text contains inappropriate content.");
             }
@@ -116,15 +109,26 @@ namespace GateNewsApi.BLL
             var news = _mapper.Map<News>(request);
 
             news.Author = author;
+            news.Category = category;
 
             var createdNews = await _newsDao.AddAsync(news);
-            return _mapper.Map<NewsResponse>(createdNews);
+            try
+            {
+                return _mapper.Map<NewsResponse>(createdNews);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public async Task<bool> UpdateNews(Guid id, NewsUpdateRequest request, Guid userId)
         {
-            bool isAppropriateContent = await _contentModerationService.CheckForInappropriateContent(request.Content);
-            if (!isAppropriateContent)
+
+            bool IsInappropriateContent = await _contentModerationService.CheckForInappropriateContent(request.Content);
+            if (IsInappropriateContent)
             {
                 throw new InvalidOperationException("The provided text contains inappropriate content.");
             }

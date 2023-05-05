@@ -3,6 +3,7 @@ using GateNewsApi.Domain;
 using GateNewsApi.Dtos.Categories;
 using GateNewsApi.Dtos.News;
 using GateNewsApi.Dtos.Authors;
+using GateNewsApi.Dtos.Users;
 
 namespace GateNewsApi.Helpers.AutoMapper
 {
@@ -22,6 +23,11 @@ namespace GateNewsApi.Helpers.AutoMapper
             CreateMap<Author, AuthorResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate.ToString("yyyy-MM-dd")));
+
+            CreateMap<Author, AuthorNewsResponse>()
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName));
+
 
             CreateMap<AuthorUpdateRequest, Author>();
 
@@ -48,6 +54,9 @@ namespace GateNewsApi.Helpers.AutoMapper
                 .ForMember(dest => dest.Author, opt => opt.Ignore())
                 .ForMember(dest => dest.CategoryId, opt => opt.Ignore())
                 .ForMember(dest => dest.Category, opt => opt.Ignore());
+
+            CreateMap<UserCreateRequest, User>()
+                .ForMember(dest => dest.Author, opt => opt.Ignore());
         }
     }
 }

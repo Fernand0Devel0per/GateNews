@@ -42,7 +42,24 @@ namespace GateNewsApi.BLL
                 return false;
             }
 
-            return await _authorDao.DeleteAsync(author);
+            bool authorDeleted = await _authorDao.DeleteAsync(author);
+     
+            if (authorDeleted)
+            {
+                var user = await _userManager.FindByIdAsync(userId.ToString());
+
+                if (user is not null)
+                {
+                    var result = await _userManager.DeleteAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public async Task<bool> UpdateAuthorAsync(Guid userId, AuthorUpdateRequest request)

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GateNewsApi.BLL.Interfaces;
 using GateNewsApi.DAL;
+using GateNewsApi.DAL.Interfaces;
 using GateNewsApi.Domain;
 using GateNewsApi.Dtos.Users;
 using GateNewsApi.Helpers.Security;
@@ -16,15 +17,13 @@ namespace GateNewsApi.BLL
     {
         private readonly UserManager<User> _userManager;
         private readonly JwtSettings _jwtSettings;
-        private readonly Mapper _mapper;
-        private readonly AuthorDao _authorDao;
+        private readonly IMapper _mapper;
 
-        public AuthService(UserManager<User> userManager, JwtSettings jwtSettings, Mapper mapper, AuthorDao authorDao)
+        public AuthService(UserManager<User> userManager, JwtSettings jwtSettings, IMapper mapper)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
             _mapper = mapper;
-            _authorDao = authorDao;
         }
 
         public async Task<IdentityResult> CreateUserAsync(UserCreateRequest request)
@@ -35,11 +34,10 @@ namespace GateNewsApi.BLL
             if (result.Succeeded)
             {
                 var author = _mapper.Map<Author>(request.Author);
-                author.UserId = Guid.Parse(user.Id);
+                author.UserId = user.Id;
                 user.Author = author;
 
                 await _userManager.UpdateAsync(user);
-                await _authorDao.AddAsync(author);
             }
 
             return result;
@@ -67,7 +65,7 @@ namespace GateNewsApi.BLL
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
         }),
                 Expires = DateTime.UtcNow.AddHours(1),

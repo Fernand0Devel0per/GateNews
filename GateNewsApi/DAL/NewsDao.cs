@@ -2,6 +2,7 @@
 using GateNewsApi.Data;
 using GateNewsApi.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace GateNewsApi.DAL
 {
@@ -16,6 +17,7 @@ namespace GateNewsApi.DAL
         {
             return await _context.News
                 .Include(n => n.Category)
+                .Include(n => n.Author)
                 .SingleOrDefaultAsync(n => n.Id == id);
         }
 
@@ -28,8 +30,8 @@ namespace GateNewsApi.DAL
         public async Task<(List<News> Items, int TotalPages)> GetByAuthorAsync(string authorFullName, int pageNumber)
         {
             var names = authorFullName.Split(' ');
-            var firstName = names[0];
-            var lastName = names[1];
+            var lastName = names.Last();
+            var firstName = string.Join(' ', names.Take(names.Length - 1));
 
             var query = GetNewsWithAuthorAndCategory().Where(n => n.Author.FirstName == firstName && n.Author.LastName == lastName);
             return await GetPagedResults(query, pageNumber);
@@ -44,8 +46,8 @@ namespace GateNewsApi.DAL
         public async Task<(List<News> Items, int TotalPages)> GetByCategoryAndAuthorAsync(Guid categoryId, string authorFullName, int pageNumber)
         {
             var names = authorFullName.Split(' ');
-            var firstName = names[0];
-            var lastName = names[1];
+            var lastName = names.Last();
+            var firstName = string.Join(' ', names.Take(names.Length - 1));
 
             var query = GetNewsWithAuthorAndCategory().Where(n => n.CategoryId == categoryId && n.Author.FirstName == firstName && n.Author.LastName == lastName);
             return await GetPagedResults(query, pageNumber);
@@ -53,19 +55,13 @@ namespace GateNewsApi.DAL
 
         public async Task<(List<News> Items, int TotalPages)> GetByDateIntervalAsync(DateTime startDate, DateTime endDate, int pageNumber)
         {
-            var query = GetNewsWithAuthorAndCategory().Where(n => n.PublishDate >= startDate && n.PublishDate <= endDate);
+            var query = GetNewsWithAuthorAndCategory().Where(n => n.PublishDate.Date >= startDate.Date && n.PublishDate.Date <= endDate.Date);
             return await GetPagedResults(query, pageNumber);
         }
 
         public async Task<(List<News> Items, int TotalPages)> GetByDateAsync(int pageNumber)
         {
             var query = GetNewsWithAuthorAndCategory().OrderByDescending(n => n.PublishDate);
-            return await GetPagedResults(query, pageNumber);
-        }
-
-        public async Task<(List<News> Items, int TotalPages)> GetByWordsAsync(List<string> words, int pageNumber)
-        {
-            var query = GetNewsWithAuthorAndCategory().Where(n => words.Any(w => n.Content.Contains(w)));
             return await GetPagedResults(query, pageNumber);
         }
 
@@ -82,6 +78,8 @@ namespace GateNewsApi.DAL
             return (items, totalPages);
 
         }
+
+
 
         private IQueryable<News> GetNewsWithAuthorAndCategory()
         {

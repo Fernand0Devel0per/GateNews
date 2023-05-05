@@ -15,7 +15,9 @@ namespace GateNewsApi.DAL
         public async Task<T> AddAsync(T entity)
         {
             await _context.AddAsync(entity);
+
             await _context.SaveChangesAsync();
+
             return entity;
         }
 

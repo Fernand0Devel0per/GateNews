@@ -7,5 +7,6 @@ namespace GateNewsApi.DAL.Interfaces
     {
         Task<List<Category>> GetAllAsync();
         Task<Category> GetByCodeAsync(CategoryEnum code);
+        Task SeedCategories();
     }
 }

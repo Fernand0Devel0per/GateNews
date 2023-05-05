@@ -3,12 +3,13 @@ using GateNewsApi.Dtos.News;
 using GateNewsApi.Helpers.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace GateNewsApi.Controllers;
 
+[ApiController]
 [Route("api/[controller]")]
-[Route("[controller]")]
 public class NewsController : ControllerBase
 {
     private readonly INewsService _newsService;
@@ -32,7 +33,7 @@ public class NewsController : ControllerBase
         return Ok(new { Items = items, TotalPages = totalPages });
     }
 
-    [HttpGet("category/{categoryId}/page/{pageNumber}")]
+    [HttpGet("category/{categoryCode}/page/{pageNumber}")]
     public async Task<IActionResult> GetByCategoryAsync(int categoryCode, int pageNumber)
     {
         try
@@ -46,7 +47,7 @@ public class NewsController : ControllerBase
         }
     }
 
-    [HttpGet("category/{categoryId}/author/{authorFullName}/page/{pageNumber}")]
+    [HttpGet("category/{categoryCode}/author/{authorFullName}/page/{pageNumber}")]
     public async Task<IActionResult> GetByCategoryAndAuthorAsync(int categoryCode, string authorFullName, int pageNumber)
     {
         try
@@ -61,9 +62,19 @@ public class NewsController : ControllerBase
     }
 
     [HttpGet("date-interval/{startDate}/{endDate}/page/{pageNumber}")]
-    public async Task<IActionResult> GetByDateIntervalAsync(DateTime startDate, DateTime endDate, int pageNumber)
+    public async Task<IActionResult> GetByDateIntervalAsync(string startDate, string endDate, int pageNumber)
     {
-        var (items, totalPages) = await _newsService.GetByDateIntervalAsync(startDate, endDate, pageNumber);
+
+
+        string dateFormat = "dd-MM-yyyy";
+
+        if (!DateTime.TryParseExact(startDate, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedStartDate) ||
+            !@DateTime.TryParseExact(endDate, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedEndDate))
+        {
+            return BadRequest($"Invalid date format. Please provide dates in the format '{dateFormat}'.");
+        }
+
+        var (items, totalPages) = await _newsService.GetByDateIntervalAsync(parsedStartDate, parsedEndDate, pageNumber);
         return Ok(new { Items = items, TotalPages = totalPages });
     }
 
@@ -74,14 +85,7 @@ public class NewsController : ControllerBase
         return Ok(new { Items = items, TotalPages = totalPages });
     }
 
-    [HttpPost("words/page/{pageNumber}")]
-    public async Task<IActionResult> GetByWordsAsync([FromBody] WordListRequest wordListRequest, int pageNumber)
-    {
-        var (items, totalPages) = await _newsService.GetByWordsAsync(wordListRequest.Words, pageNumber);
-        return Ok(new { Items = items, TotalPages = totalPages });
-    }
-
-
+   
     // POST: api/News
     [Authorize]
     [HttpPost]
@@ -91,7 +95,9 @@ public class NewsController : ControllerBase
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var createdNews = await _newsService.CreateNews(request, userId);
-            return CreatedAtAction(nameof(GetByTitleAsync), new { title = createdNews.Title, pageNumber = 1 }, createdNews);
+
+            var createdUrl = Url.Action(nameof(GetByTitleAsync), new { title = createdNews.Title, pageNumber = 1 });
+            return Created(createdUrl, createdNews);
         }
         catch (InvalidOperationException ex)
         {

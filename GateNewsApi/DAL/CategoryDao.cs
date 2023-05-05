@@ -22,5 +22,27 @@ namespace GateNewsApi.DAL
         {
             return await _context.Categories.FirstOrDefaultAsync(c => c.Code == (int)code);
         }
+
+        public async Task SeedCategories()
+        {
+            var categories = Enum.GetValues(typeof(CategoryEnum))
+                .Cast<CategoryEnum>()
+                .Select(c => new Category
+                {
+                    Code = (int)c,
+                    Name = c.ToString()
+                });
+
+            foreach (var category in categories)
+            {
+                var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Code == category.Code);
+                if (existingCategory == null)
+                {
+                    await _context.Categories.AddAsync(category);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
