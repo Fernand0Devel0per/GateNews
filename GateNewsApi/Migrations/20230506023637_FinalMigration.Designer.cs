@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GateNewsApi.Migrations
 {
     [DbContext(typeof(GateNewsDbContext))]
-    [Migration("20230505042405_Initial")]
-    partial class Initial
+    [Migration("20230506023637_FinalMigration")]
+    partial class FinalMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
