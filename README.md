@@ -1,4 +1,4 @@
-###📰 GateNews API
+# 📰 GateNews API
 
 Bem-vindo à API do GateNews, uma API de gerenciamento de notícias desenvolvida em ASP.NET Core 7.0 usando padrões de arquitetura DDD (Domain-Driven Design) e autenticação JWT. Este projeto utiliza o banco de dados SQL Server para armazenamento de dados.
 🌟 Funcionalidades
@@ -9,7 +9,7 @@ Bem-vindo à API do GateNews, uma API de gerenciamento de notícias desenvolvida
     Validação de conteúdo inapropriado usando a API OpenAI.
     API RESTful seguindo as boas práticas de design.
 
-#🚀 Começando
+# 🚀 Começando
 
 Para começar a usar a API do GateNews, siga as etapas abaixo:
 
@@ -19,7 +19,8 @@ Para começar a usar a API do GateNews, siga as etapas abaixo:
     Execute o comando dotnet run para iniciar a aplicação.
 
 A API estará disponível no endereço http://localhost:5000.
-#📚 Rotas
+
+# 📚 Rotas
 
 A API do GateNews possui as seguintes rotas:
 
@@ -53,7 +54,7 @@ Categorias
     GET /api/category: Retorna todas as categorias.
 
 
-#🛠️ Tecnologias utilizadas
+# 🛠️ Tecnologias utilizadas
 
     ASP.NET Core 7.0
     Entity Framework Core 7.0
@@ -64,7 +65,7 @@ Categorias
     JWT (JSON Web Tokens)
     OpenAI API
 
-#📖 Conclusão
+# 📖 Conclusão
 
 A API do GateNews é uma solução completa para gerenciamento de notícias, seguindo as melhores práticas de desenvolvimento e arquitetura. Com esta API, você pode criar, atualizar, excluir e pesquisar notícias, autores e categorias, além de implementar autenticação e autorização seguras usando JWT. A API também possui integração com a API OpenAI para validar o conteúdo das notícias e garantir que não haja conteúdo inapropriado.
 
@@ -75,13 +76,13 @@ Esperamos que você aproveite este projeto e que ele atenda às suas necessidade
 Boa sorte e feliz codificação! 🚀👩‍💻👨‍💻
 
 
-##English Version
+## English Version
 
-###📰 GateNews API
+# 📰 GateNews API
 
 Welcome to the GateNews API, a news management API developed in ASP.NET Core 7.0 using Domain-Driven Design (DDD) architecture patterns and JWT authentication. This project utilizes SQL Server for data storage.
 
-#🌟 Features
+# 🌟 Features
 
     Full CRUD for news, authors, and categories.
     News filtering by title, author, category, date, and keywords.
@@ -89,7 +90,7 @@ Welcome to the GateNews API, a news management API developed in ASP.NET Core 7.0
     Inappropriate content validation using the OpenAI API.
     RESTful API following good design practices.
 
-#🚀 Getting Started
+# 🚀 Getting Started
 
 To start using the GateNews API, follow the steps below:
 
@@ -100,7 +101,7 @@ To start using the GateNews API, follow the steps below:
 
 The API will be available at http://localhost:5000.
 
-#📚 Routes
+# 📚 Routes
 
 The GateNews API has the following routes:
 
@@ -133,7 +134,7 @@ Categories
 
     GET /api/category: Returns all categories.
 
-#🛠️ Technologies used
+# 🛠️ Technologies used
 
     ASP.NET Core 7.0
     Entity Framework Core 7.0
@@ -144,7 +145,7 @@ Categories
     JWT (JSON Web Tokens)
     OpenAI API
 
-#📖 Conclusion
+# 📖 Conclusion
 
 The GateNews API is a comprehensive solution for news management, following the best development and architecture practices. With this API, you can create, update, delete, and search news, authors, and categories, as well as implement secure authentication and authorization using JWT. The API also features integration with the OpenAI API for validating news content and ensuring there is no inappropriate content.
 
