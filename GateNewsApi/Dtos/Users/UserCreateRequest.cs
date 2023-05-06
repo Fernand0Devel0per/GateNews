@@ -20,6 +20,7 @@ namespace GateNewsApi.Dtos.Users
         [Required(ErrorMessage = "Password confirmation is required.")]
         [Compare("Password", ErrorMessage = "Password and password confirmation do not match.")]
         public string ConfirmPassword { get; set; }
+        [Required]
         public AuthorCreateRequest Author { get; set; }
     }
 }

@@ -2,9 +2,12 @@ using GateNewsApi.BLL.Interfaces;
 using GateNewsApi.Dtos.News;
 using GateNewsApi.Helpers.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using System.Globalization;
 using System.Security.Claims;
+using static Dapper.SqlMapper;
 
 namespace GateNewsApi.Controllers;
 
@@ -137,8 +140,8 @@ public class NewsController : ControllerBase
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var createdNews = await _newsService.CreateNews(request, userId);
 
-            var createdUrl = Url.Action(nameof(GetByTitleAsync), new { title = createdNews.Title, pageNumber = 1 });
-            return Created(createdUrl, createdNews);
+           
+            return StatusCode(StatusCodes.Status201Created, createdNews);
         }
         catch (InvalidOperationException ex)
         {

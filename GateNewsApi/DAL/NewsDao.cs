@@ -23,18 +23,18 @@ namespace GateNewsApi.DAL
 
         public async Task<(List<News> Items, int TotalPages)> GetByTitleAsync(string title, int pageNumber)
         {
-            var lowerTitle = title.ToLowerInvariant();
-            var query = GetNewsWithAuthorAndCategory().Where(n => n.Title.ToLowerInvariant().Contains(lowerTitle));
+            var lowerTitle = title.ToLower();
+            var query = GetNewsWithAuthorAndCategory().Where(n => n.Title.ToLower().Contains(lowerTitle));
             return await GetPagedResults(query, pageNumber);
         }
 
         public async Task<(List<News> Items, int TotalPages)> GetByAuthorAsync(string authorFullName, int pageNumber)
         {
-            var names = authorFullName.ToLowerInvariant().Split(' ');
+            var names = authorFullName.ToLower().Split(' ');
             var lastName = names.Last();
             var firstName = string.Join(' ', names.Take(names.Length - 1));
 
-            var query = GetNewsWithAuthorAndCategory().Where(n => n.Author.FirstName.ToLowerInvariant() == firstName && n.Author.LastName.ToLowerInvariant() == lastName);
+            var query = GetNewsWithAuthorAndCategory().Where(n => n.Author.FirstName.ToLower() == firstName && n.Author.LastName.ToLower() == lastName);
             return await GetPagedResults(query, pageNumber);
         }
 
@@ -46,11 +46,11 @@ namespace GateNewsApi.DAL
 
         public async Task<(List<News> Items, int TotalPages)> GetByCategoryAndAuthorAsync(Guid categoryId, string authorFullName, int pageNumber)
         {
-            var names = authorFullName.ToLowerInvariant().Split(' ');
+            var names = authorFullName.ToLower().Split(' ');
             var lastName = names.Last();
             var firstName = string.Join(' ', names.Take(names.Length - 1));
 
-            var query = GetNewsWithAuthorAndCategory().Where(n => n.CategoryId == categoryId && n.Author.FirstName.ToLowerInvariant() == firstName && n.Author.LastName.ToLowerInvariant() == lastName);
+            var query = GetNewsWithAuthorAndCategory().Where(n => n.CategoryId == categoryId && n.Author.FirstName.ToLower() == firstName && n.Author.LastName.ToLower() == lastName);
             return await GetPagedResults(query, pageNumber);
         }
 
