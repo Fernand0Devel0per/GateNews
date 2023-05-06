@@ -36,6 +36,34 @@ public class NewsController : ControllerBase
     }
 
     /// <summary>
+    /// Searches news by keywords in their title or content with pagination.
+    /// </summary>
+    /// <param name="wordListRequest">An object containing a list of words to search for in the title or content of news.</param>
+    /// <param name="pageNumber">The page number to fetch. Defaults to 1.</param>
+    /// <returns>
+    /// A JSON object containing a list of news matching the provided keywords in their title or content,
+    /// along with the total number of pages available for the given search criteria.
+    /// </returns>
+    [HttpPost("search")]
+    public async Task<IActionResult> SearchAsync([FromBody] WordListRequest wordListRequest, int pageNumber = 1)
+    {
+        if (wordListRequest is null || wordListRequest.Words is null || wordListRequest.Words.Count == 0)
+        {
+            return BadRequest("The word list cannot be null or empty.");
+        }
+
+        try
+        {
+            var (items, totalPages) = await _newsService.GetNewsByKeywordsAsync(wordListRequest, pageNumber);
+            return Ok(new { Items = items, TotalPages = totalPages });
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while fetching the news.");
+        }
+    }
+
+    /// <summary>
     /// Retrieve news by its author's full name with pagination.
     /// </summary>
     /// <param name="authorFullName">The full name of the author.</param>

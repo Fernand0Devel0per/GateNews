@@ -1,4 +1,5 @@
 ﻿using GateNewsApi.Domain;
+using GateNewsApi.Dtos.News;
 
 namespace GateNewsApi.DAL.Interfaces
 {
@@ -11,5 +12,6 @@ namespace GateNewsApi.DAL.Interfaces
         Task<(List<News> Items, int TotalPages)> GetByCategoryAndAuthorAsync(Guid categoryId, string authorFullName, int pageNumber);
         Task<(List<News> Items, int TotalPages)> GetByDateIntervalAsync(DateTime startDate, DateTime endDate, int pageNumber);
         Task<(List<News> Items, int TotalPages)> GetByDateAsync(int pageNumber);
+        Task<(List<News> Items, int TotalPages)> GetNewsByKeywordsAsync(WordListRequest wordListRequest, int pageNumber, int pageSize = 10);
     }
 }

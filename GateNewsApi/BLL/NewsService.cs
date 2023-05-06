@@ -85,6 +85,13 @@ namespace GateNewsApi.BLL
             return (mappedItems, result.TotalPages);
         }
 
+        public async Task<(List<NewsResponse> Items, int TotalPages)> GetNewsByKeywordsAsync(WordListRequest wordListRequest, int pageNumber, int pageSize = 10)
+        {
+            var result = await _newsDao.GetNewsByKeywordsAsync(wordListRequest, pageNumber, pageSize);
+            var newsResponseList = _mapper.Map<List<NewsResponse>>(result.Items);
+            return (newsResponseList, result.TotalPages);
+        }
+
         public async Task<NewsResponse> CreateNews(NewsCreateRequest request, Guid userId)
         {
 
